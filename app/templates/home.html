@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% set title = "Inicio" %} {% block main %}
+<div class="text-center py-5">
+  <h1 class="display-6 mb-2">Cronograma de clases</h1>
+  <p class="text-muted mb-5">Consulta los temas programados por semana</p>
+
+  <div class="d-grid gap-3 col-md-4 mx-auto">
+    <a
+      href="{{ url_for('core.week_schedule', week_id=current_week_id) }}"
+      class="btn btn-dark"
+    >
+      Semana Actual
+    </a>
+
+    <a
+      href="{{ url_for('core.week_schedule', week_id=next_week_id) }}"
+      class="btn btn-outline-dark"
+    >
+      Semana Siguiente
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+# DB
+db/app.db
+
+# CACHE
+__pycache__/
+
+# VENV
+.venv/
+
+# SCREENSHOTS
+app/static/screenshots/
+
+# FRONTEND
+node_modules/
+package-lock.json

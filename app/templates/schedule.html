@@ -1,0 +1,167 @@
+{% extends "base.html" %} {% set title = "Cronograma" %} {% block main %}
+<div id="schedule">
+  <table class="table table-bordered align-middle text-center shadow-sm">
+    <thead>
+      <tr>
+        <th colspan="6">
+          <div class="d-flex flex-column gap-1">
+            <h1 class="mt-2">PLAN SEMANAL DE CLASES TEÓRICAS</h1>
+            <h2>
+              {{schedule["time_period_start"]}} →
+              {{schedule["time_period_end"]}}
+            </h2>
+            <div class="d-flex mx-auto gap-4">
+              <div class="d-flex align-items-center gap-2">
+                <span class="color-box workshop-box"></span>
+                <span>TALLER</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <span class="color-box theory-box"></span>
+                <span>TEORÍA</span>
+              </div>
+            </div>
+          </div>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for block_name, day_block in schedule["blocks"].items() %}
+      <tr>
+        <th rowspan="3">DÍA</th>
+      </tr>
+
+      <!-- HORA -->
+      <tr>
+        {% for time_slot in day_block["time_slots"] %}
+        <th>{{time_slot["time_slot"]}}</th>
+        {% endfor %}
+
+        <!-- IMG -->
+        {% if block_name == "saturday" %}
+        <td rowspan="3">
+          <img
+            src="{{url_for('static', filename='img/logo.jpeg')}}"
+            class="logo"
+          />
+        </td>
+        {% endif %}
+      </tr>
+
+      <!-- INSTRUCTOR -->
+      <tr>
+        {% for time_slot in day_block["time_slots"] %}
+        <th>
+          <span
+            class="instructor text-uppercase"
+            data-week-time-slot-instructor-id="{{time_slot['id']}}"
+          >
+            {{time_slot["instructor"]}}
+          </span>
+          <select name="select-instructor" class="d-none form-control">
+            {% for i in instructors %} {% set selected = "selected" if i["id"]
+            == time_slot["instructor_id"] %}
+            <option value="{{i['id']}}" {{selected}}>{{i['full_name']}}</option>
+            {% endfor %}
+          </select>
+        </th>
+        {% endfor %}
+      </tr>
+
+      <!-- DÍAS -->
+      {% for day in day_block["days"] %}
+      <tr>
+        <!-- NOMBRE + NÚMERO -->
+        <th>
+          <div class="d-flex flex-column">
+            {{day["day_name"]}}
+            <span>{{day["day_number"]}}</span>
+          </div>
+        </th>
+
+        <!-- FESTIVO -->
+        {% if day["is_holiday"] %}
+        <td colspan="5">FESTIVO</td>
+
+        <!-- CLASES -->
+        {% else %} {% for class in day["classes"] %}
+        <td class="{{class['type']}}">
+          <span class="text-uppercase class" data-class-id="{{class['id']}}"
+            >{{class["topic"]}}</span
+          >
+          <select name="select-class" class="form-control d-none">
+            {% for topic in topics %} {% set selected = "selected" if
+            topic["id"] == class["topic_id"] %}
+            <option
+              value="{{topic['id']}}"
+              {{selected}}
+              data-type="{{topic['type']}}"
+            >
+              {{topic["name"]}}
+            </option>
+            {% endfor %}
+          </select>
+        </td>
+        {% endfor %} {% endif %}
+      </tr>
+      {% endfor %} {% endfor %}
+    </tbody>
+  </table>
+
+  {% if note["text"] %}
+  <div class="p-3">
+    <p id="note" class="shadow-sm text-uppercase">{{note["text"]}}</p>
+  </div>
+  {% endif %}
+</div>
+
+<form method="post" id="form-note">
+  <div class="mb-3">
+    <input
+      type="text"
+      name="note"
+      value="{{ note['text'] }}"
+      class="form-control"
+    />
+  </div>
+
+  <div class="d-flex gap-2">
+    <button type="submit" class="btn btn-success">Guardar nota</button>
+
+    <button
+      type="button"
+      class="btn btn-primary d-flex align-items-center"
+      id="btn-download"
+      data-url="{{ url_for('core.screenshot', week_id=week_id) }}"
+    >
+      <span>Descargar imagen</span>
+
+      <span
+        class="spinner-border spinner-border-sm d-none"
+        aria-hidden="true"
+      ></span>
+    </button>
+  </div>
+</form>
+
+{% endblock %} {% block scripts %}
+<script type="module">
+  import {
+    initScreenshot,
+    initChangeInstructor,
+    initChangeClass,
+  } from "{{url_for('static', filename='js/events.js')}}";
+
+  // VARIABLES
+  window.API_URLS = {
+    updateTimeSlotInstructor: "{{url_for('core.update_time_slot_instructor')}}",
+    updateClass: "{{url_for('core.update_class')}}",
+  };
+  const btnDownload = document.getElementById("btn-download");
+
+  // INICIALIZACIÓN
+  initScreenshot(btnDownload);
+  initChangeInstructor();
+  initChangeClass();
+</script>
+{% endblock %}

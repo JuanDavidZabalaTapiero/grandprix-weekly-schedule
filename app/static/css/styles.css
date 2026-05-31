@@ -1,0 +1,46 @@
+:root {
+  --color-primary: #c73b37;
+  --color-secondary: #2a2f46;
+}
+
+/* TABLA */
+th {
+  background-color: var(--color-secondary) !important;
+  color: white !important;
+}
+
+.color-box {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 1px solid;
+}
+
+.workshop-box {
+  background-color: var(--color-primary);
+}
+
+.theory-box {
+  background: white;
+}
+
+/* CLASES */
+.workshop {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+}
+
+.logo {
+  max-width: 200px;
+}
+
+/* NOTA */
+#note {
+  border-left: 5px solid var(--color-primary);
+  border-radius: 10px;
+  padding: 15px 20px;
+}
+
+#form-note {
+  margin-bottom: 200px;
+}
