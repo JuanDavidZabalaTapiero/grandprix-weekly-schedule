@@ -30,6 +30,18 @@ th {
   color: white !important;
 }
 
+/* FESTIVO */
+.holiday {
+  text-align: center;
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--color-primary) !important;
+  background-color: #fde2e4 !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* LOGO */
 .logo {
   max-width: 200px;
 }
