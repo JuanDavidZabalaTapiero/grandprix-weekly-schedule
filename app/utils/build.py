@@ -74,15 +74,19 @@ def build_schedule(week_id):
     saturday_days = [d for d in days if d["day_name"] == "Sábado"]
 
     # DATES
-
     week_end_dt = datetime.strptime(week["week_end"], "%Y-%m-%d").date()
     week_end = week_end_dt - timedelta(days=1)
 
-    # RESPONSE
+    # FORMATEO: DD-MM-YYYY
+    time_period_start = datetime.strptime(week["week_start"], "%Y-%m-%d").strftime(
+        "%d-%m-%Y"
+    )
+    time_period_end = week_end.strftime("%d-%m-%Y")
 
+    # RESPONSE
     return {
-        "time_period_start": week["week_start"],
-        "time_period_end": week_end,
+        "time_period_start": time_period_start,
+        "time_period_end": time_period_end,
         "blocks": {
             "monday-friday": {
                 "time_slots": serialize_time_slots(weekday_time_slots),
