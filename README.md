@@ -32,7 +32,7 @@ CREATE TABLE instructors (
 CREATE TABLE time_slots (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     label TEXT NOT NULL,
-    block_type TEXT NOT NULL -- week_day | saturday
+    block_type TEXT NOT NULL -- weekday | saturday
 );
 
 CREATE TABLE weeks (

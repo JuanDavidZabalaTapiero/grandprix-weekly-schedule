@@ -30,7 +30,7 @@ export function initScreenshot(button) {
         link.click();
       }
     } catch (err) {
-      console.error(error);
+      console.error(err);
     } finally {
       // Habilitar botón
       button.disabled = false;
